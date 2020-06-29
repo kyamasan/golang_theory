@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /* hello world */
 
 // func init() {
@@ -285,13 +287,293 @@ func main() {
 // 	fmt.Println(max)
 // }
 
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
-/*  */
+/* ポインタ */
+
+// func foo(x int) {
+// 	x = 1
+// }
+
+// func bar(x *int) {
+// 	*x = 1
+// }
+
+// func main() {
+// 	var n int = 100
+// 	foo(n)
+// 	fmt.Println(n)
+// 	bar(&n)
+// 	fmt.Println(n)
+// }
+
+// func main() {
+// 	var n int = 100
+// 	fmt.Println(n)
+// 	fmt.Println(&n)
+
+// 	var p *int = &n
+// 	fmt.Println(p)
+// 	fmt.Println(*p)
+// }
+
+/* new */
+
+// func main() {
+// 	// var p *int = new(int)
+// 	// fmt.Println(p) //0xc000014090
+// 	// var p2 *int
+// 	// fmt.Println(p2) //<nil>
+
+// 	//スライス
+// 	s := make([]int, 0)
+// 	fmt.Printf("%T\n", s)
+
+// 	//マップ
+// 	m := make(map[string]int)
+// 	fmt.Printf("%T\n", m)
+
+// 	//ポインタ
+// 	var p *int = new(int)
+// 	fmt.Printf("%T\n", p)
+// }
+
+/* struct */
+// type Vertex struct {
+// 	X int
+// 	Y int
+// 	S string
+// }
+
+// func main() {
+// 	// v1 := Vertex{X: 1, Y: 2}
+// 	// fmt.Println(v1)
+// 	// v2 := Vertex{1, 2, "test"}
+// 	// fmt.Println(v2)
+
+// 	// v3 := Vertex{}
+// 	// fmt.Println(v3)
+
+// 	// var v4 Vertex
+// 	// fmt.Println(v4)
+
+// 	// v5 := new(Vertex)
+// 	// fmt.Println(v5)
+// 	// fmt.Printf("%T %v\n", v5, v5)
+
+// 	// v6 := &Vertex{}
+// 	// fmt.Println(v6)
+// 	// fmt.Printf("%T %v\n", v6, v6)
+
+// 	m1 := make([]int, 0)
+// 	fmt.Printf("%T %v\n", m1, m1)
+// 	m2 := []int{}
+// 	fmt.Printf("%T %v\n", m2, m2)
+// }
+
+/* レシーバ */
+// type Vertex struct {
+// 	X, Y int
+// }
+
+// // func Area(v Vertex) int {
+// // 	return v.X * v.Y
+// // }
+
+// func (v Vertex) Area() int {
+// 	return v.X * v.Y
+// }
+
+// func (v *Vertex) Scale(i int) {
+// 	v.X = v.X * i
+// 	v.Y = v.Y * i
+// }
+
+// func New(x, y int) *Vertex {
+// 	return &Vertex{x, y}
+// }
+
+// func main() {
+// 	// v := Vertex{3, 4}
+// 	v := New(3, 4)
+// 	v.Scale(10)
+// 	fmt.Println(v.Area())
+// }
+
+// /* Embedded */
+// type Vertex struct {
+// 	x, y int
+// }
+
+// func (v Vertex) Area() int {
+// 	return v.x * v.y
+// }
+
+// func (v *Vertex) Scale(i int) {
+// 	v.x = v.x * i
+// 	v.y = v.y * i
+// }
+
+// type Vertex3D struct {
+// 	Vertex
+// 	z int
+// }
+
+// func (v Vertex3D) Area3D() int {
+// 	return v.x * v.y * v.z
+// }
+
+// func (v *Vertex3D) Scale3D(i int) {
+// 	v.x = v.x * i
+// 	v.y = v.y * i
+// 	v.z = v.z * i
+// }
+
+// func New(x, y, z int) *Vertex3D {
+// 	return &Vertex3D{Vertex{x, y}, z}
+// }
+
+// func main() {
+// 	v := New(3, 4, 5)
+// 	v.Scale3D(10)
+// 	// fmt.Println(v.Area())
+// 	fmt.Println(v.Area3D())
+// }
+
+/* nonstruct */
+
+// type MyInt int
+
+// func (i MyInt) Double() int {
+// 	return int(i * 2)
+// }
+
+/* interface */
+
+// type Human interface {
+// 	Say() string
+// }
+
+// type Dog struct {
+// 	Name string
+// }
+
+// type Person struct {
+// 	Name string
+// }
+
+// func (p *Person) Say() string {
+// 	p.Name = "Mr." + p.Name
+// 	fmt.Println(p.Name)
+// 	return p.Name
+// }
+
+// func DriveCar(h Human) {
+// 	if h.Say() == "Mr.Mike" {
+// 		fmt.Println("Run")
+// 	} else {
+// 		fmt.Println("Get Out")
+// 	}
+// }
+
+// func main() {
+// 	var mike Human = &Person{"Mike"}
+// 	DriveCar(mike)
+
+// 	var x Human = &Person{"X"}
+// 	DriveCar(x)
+
+// 	//cannot use dog (type Dog) as type Human in argument to DriveCar
+// 	// var dog Dog = &Dog{"Hachi"}
+// 	// DriveCar(dog)
+// }
+
+/* assertion */
+
+// func do(i interface{}) {
+// 	switch v := i.(type) {
+// 	case int:
+// 		fmt.Println(v * 2)
+// 	case string:
+// 		fmt.Println(v + "!")
+// 	default:
+// 		fmt.Printf("I don't know %T\n", v)
+// 	}
+// }
+
+// func main() {
+// 	do(10)
+// 	do("Mike")
+// 	do(true)
+// }
+
+/* stringer */
+// type Person struct {
+// 	Name string
+// 	Age  int
+// }
+
+// func (p Person) String() string {
+// 	return fmt.Sprintf("My Name is %v", p.Name)
+// }
+
+// func main() {
+// 	mike := Person{"Mike", 22}
+// 	fmt.Println(mike)
+// }
+
+/* Error */
+
+// type UserNotFound struct {
+// 	UserName string
+// }
+
+// func (e *UserNotFound) Error() string {
+// 	return fmt.Sprintf("User not found: %v", e.UserName)
+// }
+
+// func myFunc() error {
+// 	ok := false
+// 	if ok {
+// 		return nil
+// 	}
+// 	return &UserNotFound{UserName: "Mike"}
+// }
+
+// func main() {
+// 	if err := myFunc(); err != nil {
+// 		fmt.Println(err)
+// 	}
+// }
+
+/*
+Q1. 以下に、7と表示されるメソッドを作成してください。
+*/
+
+// type Vertex struct {
+// 	X, Y int
+// }
+
+// func (v Vertex) Plus() int {
+// 	return v.X + v.Y
+// }
+
+// func main() {
+// 	v := Vertex{3, 4}
+// 	fmt.Println(v.Plus())
+// }
+
+/*
+Q2 X is 3! Y is 4! と表示されるStringerを作成してください。
+*/
+
+type Vertex struct {
+	X, Y int
+}
+
+func (v Vertex) String() string {
+	return fmt.Sprintf("X is %v!, Y is %v!", v.X, v.Y)
+}
+
+func main() {
+	v := Vertex{3, 4}
+	fmt.Println(v)
+}

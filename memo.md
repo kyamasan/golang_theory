@@ -1,4 +1,40 @@
-//hello world
+### スニペットの追加方法
+
+vscode から、
+
+> file → preferences → user snippets
+
+を起動。go.json を選択。
+
+```json
+{
+  // Place your snippets for go here. Each snippet is defined under a snippet name and has a prefix, body and
+  // description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+  // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+  // same ids are connected.
+  // Example:
+  // "Print to console": {
+  // 	"prefix": "log",
+  // 	"body": [
+  // 		"console.log('$1');",
+  // 		"$2"
+  // 	],
+  // 	"description": "Log output to console"
+  // }
+  "Println": {
+    "prefix": "println",
+    "body": ["fmt.Println()"],
+    "description": "fmt.Println()"
+  },
+  "Printf": {
+    "prefix": "printf",
+    "body": ["fmt.Printf(\"%T %v\", foo, foo)"],
+    "description": "fmt.Printf()"
+  }
+}
+```
+
+### hello world
 
 ```go
 package main
@@ -17,7 +53,7 @@ func main() {
 メソッドが大文字であれば Public なので呼び出し可能。
 init()は main()よりも先に呼ばれる特別な関数。
 
-//import
+### import
 
 Golang の標準ドキュメント
 https://golang.org/pkg/
@@ -36,7 +72,8 @@ func main() {
 }
 ```
 
-//変数宣言
+### 変数宣言
+
 var を変数全てに書かなくても、()で括る書き方もある。
 var を使わない x := ~ という書き方もある。(short variable declaretion)
 
