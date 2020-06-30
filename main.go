@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /* hello world */
 
@@ -565,15 +567,256 @@ Q1. 以下に、7と表示されるメソッドを作成してください。
 Q2 X is 3! Y is 4! と表示されるStringerを作成してください。
 */
 
-type Vertex struct {
-	X, Y int
-}
+// type Vertex struct {
+// 	X, Y int
+// }
 
-func (v Vertex) String() string {
-	return fmt.Sprintf("X is %v!, Y is %v!", v.X, v.Y)
+// func (v Vertex) String() string {
+// 	return fmt.Sprintf("X is %v!, Y is %v!", v.X, v.Y)
+// }
+
+// func main() {
+// 	v := Vertex{3, 4}
+// 	fmt.Println(v)
+// }
+
+/* GoRoutine */
+// func goroutine(s string, wg *sync.WaitGroup) {
+// 	for i := 0; i < 5; i++ {
+// 		//time.Sleep(100 * time.Millisecond)
+// 		fmt.Println(s)
+// 	}
+// 	wg.Done()
+// }
+
+// func normal(s string) {
+// 	for i := 0; i < 5; i++ {
+// 		// time.Sleep(100 * time.Millisecond)
+// 		fmt.Println(s)
+// 	}
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	wg.Add(1)
+// 	go goroutine("world", &wg)
+// 	normal("Hello")
+// 	wg.Wait()
+// }
+
+/* channel */
+
+// func gorouitne1(s []int, c chan int) {
+// 	sum := 0
+// 	for _, v := range s {
+// 		sum += v
+// 		c <- sum
+// 	}
+// 	close(c)
+// }
+
+// func main() {
+// 	s := []int{1, 2, 3, 4, 5}
+// 	c := make(chan int)
+// 	go gorouitne1(s, c)
+// 	for i := range c {
+// 		fmt.Println(i)
+// 	}
+// }
+
+/* Buffered Channels */
+
+// func main() {
+// 	ch := make(chan int, 2)
+// 	ch <- 100
+// 	fmt.Println(len(ch))
+// 	ch <- 200
+// 	fmt.Println(len(ch))
+
+// 	close(ch)
+// 	for c := range ch {
+// 		fmt.Println(c)
+// 	}
+// }
+
+/* producer, consumer */
+
+// func producer(ch chan int, i int) {
+// 	ch <- i * 2
+// }
+
+// func consumer(ch chan int, wg *sync.WaitGroup) {
+// 	for i := range ch {
+// 		func() {
+// 			defer wg.Done()
+// 			fmt.Println("process", i*1000)
+// 		}()
+// 	}
+// 	fmt.Println("#####################")
+// }
+
+// func main() {
+// 	var wg sync.WaitGroup
+// 	ch := make(chan int)
+
+// 	//Producer
+// 	for i := 0; i < 10; i++ {
+// 		wg.Add(1)
+// 		go producer(ch, i)
+// 	}
+
+// 	//Consumer
+// 	go consumer(ch, &wg)
+// 	wg.Wait()
+// 	close(ch)
+// 	time.Sleep(2 * time.Second)
+// 	fmt.Println("Done")
+// }
+
+/* fan-out fan-in */
+// func producer(first chan int) {
+// 	defer close(first)
+// 	for i := 0; i < 10; i++ {
+// 		first <- i
+// 	}
+// }
+
+// func multi2(first <-chan int, second chan<- int) {
+// 	defer close(second)
+// 	for v := range first {
+// 		second <- v * 2
+// 	}
+// }
+
+// func multi4(second <-chan int, third chan<- int) {
+// 	defer close(third)
+// 	for v := range second {
+// 		third <- v * 4
+// 	}
+// }
+
+// func main() {
+// 	first := make(chan int)
+// 	second := make(chan int)
+// 	third := make(chan int)
+
+// 	go producer(first)
+// 	go multi2(first, second)
+// 	go multi4(second, third)
+
+// 	for result := range third {
+// 		fmt.Println(result)
+// 	}
+// }
+
+/* select */
+
+// func gorouitne1(ch chan string) {
+// 	for {
+// 		ch <- "packet from 1"
+// 		time.Sleep(1 * time.Second)
+// 	}
+// }
+
+// func gorouitne2(ch chan int) {
+// 	for {
+// 		ch <- 100
+// 		time.Sleep(3 * time.Second)
+// 	}
+// }
+
+// func main() {
+// 	c1 := make(chan string)
+// 	c2 := make(chan int)
+// 	go gorouitne1(c1)
+// 	go gorouitne2(c2)
+// 	for {
+// 		select {
+// 		case msg1 := <-c1:
+// 			fmt.Println(msg1)
+// 		case msg2 := <-c2:
+// 			fmt.Println(msg2)
+// 		}
+// 	}
+// }
+
+/* Default Selection */
+
+// func main() {
+// 	tick := time.Tick(100 * time.Millisecond)
+// 	boom := time.After(500 * time.Millisecond)
+// OuterLoop:
+// 	for {
+// 		select {
+// 		case <-tick:
+// 			fmt.Println("tick.")
+// 		case <-boom:
+// 			fmt.Println("BOOM!")
+// 			break OuterLoop
+// 		default:
+// 			fmt.Println("    .")
+// 			time.Sleep(50 * time.Millisecond)
+// 		}
+// 	}
+// 	fmt.Println("##############")
+// }
+
+/* sync.Mutex */
+// type Counter struct {
+// 	v   map[string]int
+// 	mux sync.Mutex
+// }
+
+// //実体を書き換えたいのでポインタレシーバ
+// func (c *Counter) Inc(key string) {
+// 	c.mux.Lock()
+// 	defer c.mux.Unlock()
+// 	c.v[key]++
+// }
+
+// func (c *Counter) Value(key string) int {
+// 	c.mux.Lock()
+// 	defer c.mux.Unlock()
+// 	return c.v[key]
+// }
+
+// func main() {
+// 	// c := make(map[string]int)
+// 	c := Counter{v: make(map[string]int)}
+// 	go func() {
+// 		for i := 0; i < 100000; i++ {
+// 			// c["key"] += 1
+// 			c.Inc("key")
+// 		}
+// 	}()
+// 	go func() {
+// 		for i := 0; i < 100000; i++ {
+// 			// c["key"] += 1
+// 			c.Inc("key")
+// 		}
+// 	}()
+// 	time.Sleep(1 * time.Second)
+// 	fmt.Println(c, (&c).Value("key"))
+// }
+
+/* 演習 */
+
+func goroutine(s []string, c chan string) {
+	sum := ""
+	for _, v := range s {
+		sum += v
+		c <- sum
+	}
+	close(c)
 }
 
 func main() {
-	v := Vertex{3, 4}
-	fmt.Println(v)
+	words := []string{"test1!", "test2!", "test3!", "test4!"}
+	c := make(chan string)
+	go goroutine(words, c)
+	for w := range c {
+		fmt.Println(w)
+	}
 }
+
+/*  */
